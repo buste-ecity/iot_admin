@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     //测试时全部运行访问
-                    .antMatchers("/**").permitAll()
+//                    .antMatchers("/**").permitAll()
                     // 允许对于网站静态资源的无授权访问
                     .antMatchers(HttpMethod.GET,
                             "/",
@@ -49,8 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/**/*.html",
                             "/**/*.css",
                             "/**/*.js",
+                            "/swagger-ui/**",
                             "/swagger-resources/**",
-                            "/v2/api-docs/**"
+                            "/v3/api-docs/**"
                     )
                     .permitAll()
                     // 对登录注册要允许匿名访问
