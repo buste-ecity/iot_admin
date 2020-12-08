@@ -2,6 +2,7 @@ package com.buste.iot.security.component;
 
 
 import com.buste.iot.common.util.JwtTokenUtil;
+import com.buste.iot.core.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

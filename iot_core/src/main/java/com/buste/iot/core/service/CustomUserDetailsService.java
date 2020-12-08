@@ -1,4 +1,4 @@
-package com.buste.iot.security.component;
+package com.buste.iot.core.service;
 
 
 import com.buste.iot.core.model.TestAdmin;

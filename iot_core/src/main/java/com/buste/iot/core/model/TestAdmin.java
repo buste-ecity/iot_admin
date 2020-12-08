@@ -16,6 +16,10 @@ public class TestAdmin {
         this.password = password;
     }
 
+    public TestAdmin() {
+
+    }
+
     public Long getId() {
         return id;
     }
