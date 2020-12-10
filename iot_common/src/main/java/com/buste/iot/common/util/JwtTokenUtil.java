@@ -30,10 +30,10 @@ public class JwtTokenUtil {
     /**
      * 根据负责生成JWT的token
      */
-    private String generateToken(Map<String, Object> claims) {
+    private String generateToken(Map<String, Object> claims,int i) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(generateExpirationDate())
+                .setExpiration(generateExpirationDate(i))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
@@ -58,8 +58,8 @@ public class JwtTokenUtil {
      * 生成token的过期时间
      * @return
      */
-    private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
+    private Date generateExpirationDate(int i) {
+        return new Date(System.currentTimeMillis() + expiration * 1000 * i);
     }
 
     /**
@@ -90,7 +90,7 @@ public class JwtTokenUtil {
     /**
      * 判断token是否已经失效
      */
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         Date expiredDate = getExpiredDateFromToken(token);
         return expiredDate.before(new Date());
     }
@@ -110,7 +110,16 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
-        return generateToken(claims);
+        return generateToken(claims,1);
+    }
+    /**
+     * 根据token生成refresh_token
+     */
+    public String generateRefreshToken(String token) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, token);
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims,72);
     }
 
     /**
@@ -123,9 +132,9 @@ public class JwtTokenUtil {
     /**
      * 刷新token
      */
-    public String refreshToken(String token) {
+    public String refreshToken(String token,int i) {
         Claims claims = getClaimsFromToken(token);
         claims.put(CLAIM_KEY_CREATED, new Date());
-        return generateToken(claims);
+        return generateToken(claims,i);
     }
 }

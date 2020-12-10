@@ -5,6 +5,7 @@ import com.buste.iot.core.model.TestAdmin;
 import com.buste.iot.core.service.TestService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +32,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         // 角色必须以`ROLE_`开头，数据库中没有，则在这里加
         authorities.add(new SimpleGrantedAuthority("ROLE_"+"USER"));
 
-        return new org.springframework.security.core.userdetails.User(
+        //org.springframework.security.core.userdetails.User
+        return new User(
                 admin.getUsername(),
                 passwordEncoder.encode(admin.getPassword()),
                 authorities);

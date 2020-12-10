@@ -50,8 +50,10 @@ public class TestService {
         return newAdmin;
     }
 
-    public String fakeLogin(String username, String password) {
+    public String[] fakeLogin(String username, String password) {
+        String[] tokens = new String[2];
         String token = null;
+        String r_token = null;
         try {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
             if(!passwordEncoder.matches(password,userDetails.getPassword())){
@@ -64,9 +66,28 @@ public class TestService {
                     userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
+            r_token = jwtTokenUtil.generateRefreshToken(token);
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
         }
-        return token;
+        tokens[0]=token;
+        tokens[1]=r_token;
+        return tokens;
+    }
+
+    public String[] rTokenCheck(String token, String rToken) {
+        String[] tokens = new String[2];
+        try {
+            if(!token.equals(jwtTokenUtil.getUserNameFromToken(rToken))){
+                throw new BadCredentialsException("Token不正确");
+            }
+            if(!jwtTokenUtil.isTokenExpired(rToken)){
+                tokens[0] = jwtTokenUtil.refreshToken(token,1);
+                tokens[1] = jwtTokenUtil.refreshToken(rToken,72);
+            }
+        } catch (AuthenticationException e) {
+            LOGGER.warn("刷新Token异常:{}", e.getMessage());
+        }
+        return tokens;
     }
 }
