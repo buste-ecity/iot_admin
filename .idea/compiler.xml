@@ -8,7 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="iot_core" />
         <module name="iot_security" />
-        <module name="iot_admin" />
+        <module name="iot_admin (1)" />
         <module name="iot_common" />
       </profile>
     </annotationProcessing>

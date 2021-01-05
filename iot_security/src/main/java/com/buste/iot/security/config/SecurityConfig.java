@@ -1,7 +1,9 @@
 package com.buste.iot.security.config;
 
 
+import com.buste.iot.core.service.CustomUserDetailsService;
 import com.buste.iot.security.component.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,7 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import javax.activation.DataSource;
 import javax.annotation.Resource;
 
 
@@ -40,21 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     //测试时全部运行访问
-                    .antMatchers("/**").permitAll()
+//                    .antMatchers("/**").permitAll()
                     // 允许对于网站静态资源的无授权访问
                     .antMatchers(HttpMethod.GET,
                             "/",
                             "/*.html",
-                            "/favicon.ico",
-                            "/**/*.html",
-                            "/**/*.css",
-                            "/**/*.js",
-                            "/swagger-resources/**",
-                            "/v2/api-docs/**"
+                            "/**/*.html","/**/*.css","/**/*.js",
+                            "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**"
                     )
                     .permitAll()
-                    // 对登录注册要允许匿名访问
-                    .antMatchers("/admin/login", "/admin/register")
+                    // 对登录注册,刷新Token要允许匿名访问
+                    .antMatchers("/admin/login", "/admin/register","/admin/refresh")
                     .permitAll()
                     //跨域请求会先进行一次options请求
                     .antMatchers(HttpMethod.OPTIONS)
@@ -62,6 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // 除上面外的所有请求全部需要鉴权认证
                     .anyRequest()
                     .authenticated()
+               .and()
+               .rememberMe()
+                    .userDetailsService(userDetailsService())
+//                    .tokenRepository(persistentTokenRepository)
+                    .tokenValiditySeconds(60*60*24*15)
                .and()
                .exceptionHandling()
                    .accessDeniedHandler(restfulAccessDeniedHandler)
