@@ -31,8 +31,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         // 角色必须以`ROLE_`开头，数据库中没有，则在这里加
         authorities.add(new SimpleGrantedAuthority("ROLE_"+"USER"));
-
+        //authorities.add(new SimpleGrantedAuthority("ROLE_"+"ADMIN"));
         //org.springframework.security.core.userdetails.User
+
         return new User(
                 admin.getUsername(),
                 passwordEncoder.encode(admin.getPassword()),

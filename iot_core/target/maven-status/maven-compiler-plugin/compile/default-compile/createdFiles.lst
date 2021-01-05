@@ -1,0 +1,4 @@
+com\buste\iot\core\model\TestAdmin.class
+com\buste\iot\core\controller\TestController.class
+com\buste\iot\core\service\TestService.class
+com\buste\iot\core\service\CustomUserDetailsService.class

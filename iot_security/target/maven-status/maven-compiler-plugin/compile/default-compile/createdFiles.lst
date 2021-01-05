@@ -1,0 +1,5 @@
+com\buste\iot\security\component\MyPasswordEncoder.class
+com\buste\iot\security\component\JwtAuthenticationTokenFilter.class
+com\buste\iot\security\config\SecurityConfig.class
+com\buste\iot\security\component\RestAuthenticationEntryPoint.class
+com\buste\iot\security\component\RestfulAccessDeniedHandler.class

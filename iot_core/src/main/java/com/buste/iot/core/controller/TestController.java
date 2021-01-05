@@ -21,7 +21,7 @@ import java.util.Map;
  * @author buste
  */
 @RestController
-@Api(tags = "testController")
+@Api(value = "testController",tags = "testController")
 @RequestMapping("/admin")
 public class TestController {
 

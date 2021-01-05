@@ -67,6 +67,8 @@ public class TestService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
             r_token = jwtTokenUtil.generateRefreshToken(token);
+            //记录登录时间
+            System.currentTimeMillis();
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
         }
